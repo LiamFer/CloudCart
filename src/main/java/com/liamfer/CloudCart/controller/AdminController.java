@@ -28,8 +28,9 @@ public class AdminController {
     }
 
     @DeleteMapping("/products/{id}")
-    public ResponseEntity<?> deleteProduct(@PathVariable("id") Long id){
-        return ResponseEntity.ok().build();
+    public ResponseEntity<Void> deleteProduct(@PathVariable("id") Long id){
+        productService.deleteProduct(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 }

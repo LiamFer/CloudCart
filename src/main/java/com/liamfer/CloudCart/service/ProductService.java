@@ -34,6 +34,11 @@ public class ProductService {
         return productMapper.toProductResponseDTO(updatedProduct);
     }
 
+    public void deleteProduct(Long id){
+        this.findProduct(id);
+        productRepository.deleteById(id);
+    }
+
 
     private ProductEntity findProduct(Long id){
         Optional<ProductEntity> product = productRepository.findById(id);
