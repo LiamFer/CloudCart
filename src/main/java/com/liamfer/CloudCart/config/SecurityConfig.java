@@ -1,4 +1,4 @@
-package com.liamfer.CloudCart.configs;
+package com.liamfer.CloudCart.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
