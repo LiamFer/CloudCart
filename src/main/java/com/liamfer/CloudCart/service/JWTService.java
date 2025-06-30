@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.time.InstantSource;
 
 @Service
 public class JWTService {
@@ -19,8 +18,14 @@ public class JWTService {
         return JWT.create()
                 .withIssuer("cloudcart")
                 .withSubject(subject)
+                .withIssuedAt(Instant.now())
                 .withExpiresAt(getDefaultExpirationTime())
                 .sign(algorithm);
+    }
+
+    public String validateToken(String token){
+        Algorithm algorithm = Algorithm.HMAC256(secret);
+        return JWT.require(algorithm).withIssuer("cloudcart").build().verify(token).getSubject();
     }
 
     private Instant getDefaultExpirationTime(){
