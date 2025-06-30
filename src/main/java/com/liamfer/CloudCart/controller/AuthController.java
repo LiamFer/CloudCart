@@ -20,8 +20,8 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<APIMessage> registerUser(@RequestBody @Valid CreateUserDTO createUserDTO){
+    public ResponseEntity<APIMessage<String>> registerUser(@RequestBody @Valid CreateUserDTO createUserDTO){
         authService.registerUser(createUserDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(new APIMessage(HttpStatus.CREATED.value(), "Usuário criado!"));
+        return ResponseEntity.status(HttpStatus.CREATED).body(new APIMessage<String>(HttpStatus.CREATED.value(), "Usuário criado!"));
     }
 }

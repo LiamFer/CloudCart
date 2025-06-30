@@ -3,6 +3,7 @@ package com.liamfer.CloudCart.service;
 import com.liamfer.CloudCart.dto.APIMessage;
 import com.liamfer.CloudCart.dto.CreateUserDTO;
 import com.liamfer.CloudCart.entity.UserEntity;
+import com.liamfer.CloudCart.enums.UserRole;
 import com.liamfer.CloudCart.repository.UserRepository;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
@@ -33,9 +34,11 @@ public class AuthService {
         user.setCpf(createUserDTO.cpf());
         user.setEmail(createUserDTO.email());
         user.setPassword(hashedPassword);
+        user.setRole(UserRole.STANDARD);
 
         userRepository.save(user);
     }
+
 
     private UserDetails findUser(String email){
         Optional<UserDetails> user = userRepository.findByEmail(email);
