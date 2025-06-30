@@ -1,4 +1,4 @@
-package com.liamfer.CloudCart.dto;
+package com.liamfer.CloudCart.dto.user;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

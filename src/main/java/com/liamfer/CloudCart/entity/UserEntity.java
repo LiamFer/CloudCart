@@ -33,7 +33,7 @@ public class UserEntity implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if(role.getRole().equalsIgnoreCase("role_admin")) return List.of(new SimpleGrantedAuthority(UserRole.ADMIN.getRole()),new SimpleGrantedAuthority(UserRole.STANDARD.getRole()));
+        if(role.getRole().equalsIgnoreCase("ROLE_ADMIN")) return List.of(new SimpleGrantedAuthority(UserRole.ADMIN.getRole()),new SimpleGrantedAuthority(UserRole.STANDARD.getRole()));
         return List.of(new SimpleGrantedAuthority(UserRole.STANDARD.getRole()));
     }
 

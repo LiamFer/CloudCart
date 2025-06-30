@@ -1,9 +1,9 @@
 package com.liamfer.CloudCart.controller;
 
 import com.liamfer.CloudCart.dto.APIMessage;
-import com.liamfer.CloudCart.dto.CreateUserDTO;
-import com.liamfer.CloudCart.dto.GeneratedTokenResponseDTO;
-import com.liamfer.CloudCart.dto.LoginUserDTO;
+import com.liamfer.CloudCart.dto.user.CreateUserDTO;
+import com.liamfer.CloudCart.dto.user.GeneratedTokenResponseDTO;
+import com.liamfer.CloudCart.dto.user.LoginUserDTO;
 import com.liamfer.CloudCart.service.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;

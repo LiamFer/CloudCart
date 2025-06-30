@@ -1,9 +1,7 @@
 package com.liamfer.CloudCart.service;
 
-import com.liamfer.CloudCart.dto.APIMessage;
-import com.liamfer.CloudCart.dto.CreateUserDTO;
-import com.liamfer.CloudCart.dto.GeneratedTokenResponseDTO;
-import com.liamfer.CloudCart.dto.LoginUserDTO;
+import com.liamfer.CloudCart.dto.user.CreateUserDTO;
+import com.liamfer.CloudCart.dto.user.LoginUserDTO;
 import com.liamfer.CloudCart.entity.UserEntity;
 import com.liamfer.CloudCart.enums.UserRole;
 import com.liamfer.CloudCart.repository.UserRepository;
@@ -15,7 +13,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.security.auth.login.CredentialException;
 import java.util.Optional;
 
 @Service

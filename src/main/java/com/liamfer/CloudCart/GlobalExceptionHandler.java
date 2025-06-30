@@ -5,6 +5,7 @@ import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -37,6 +38,15 @@ public class GlobalExceptionHandler {
     public ResponseEntity<APIMessage<String>> AuthenticationExceptionHandler(Exception ex){
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(new APIMessage<String>(HttpStatus.BAD_REQUEST.value(),"Invalid Credentials"));
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<APIMessage<String>> handleHttpMessageNotReadable(HttpMessageNotReadableException ex) {
+        APIMessage<String> message = new APIMessage<>(
+                HttpStatus.BAD_REQUEST.value(),
+                "Request body is missing or malformed"
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(message);
     }
 
     @ExceptionHandler(EntityExistsException.class)
