@@ -2,6 +2,8 @@ package com.liamfer.CloudCart.controller;
 
 import com.liamfer.CloudCart.dto.APIMessage;
 import com.liamfer.CloudCart.dto.CreateUserDTO;
+import com.liamfer.CloudCart.dto.GeneratedTokenResponseDTO;
+import com.liamfer.CloudCart.dto.LoginUserDTO;
 import com.liamfer.CloudCart.service.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -23,5 +25,11 @@ public class AuthController {
     public ResponseEntity<APIMessage<String>> registerUser(@RequestBody @Valid CreateUserDTO createUserDTO){
         authService.registerUser(createUserDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(new APIMessage<String>(HttpStatus.CREATED.value(), "Usuário criado!"));
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<GeneratedTokenResponseDTO> registerUser(@RequestBody @Valid LoginUserDTO LoginUserDTO){
+        String token = authService.loginUser(LoginUserDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(new GeneratedTokenResponseDTO(token));
     }
 }

@@ -5,11 +5,13 @@ import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.naming.AuthenticationException;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -29,6 +31,12 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(new APIMessage<Map<String, String>>(HttpStatus.BAD_REQUEST.value(),errors));
+    }
+
+    @ExceptionHandler({AuthenticationException.class, AuthenticationServiceException.class})
+    public ResponseEntity<APIMessage<String>> AuthenticationExceptionHandler(Exception ex){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new APIMessage<String>(HttpStatus.BAD_REQUEST.value(),"Invalid Credentials"));
     }
 
     @ExceptionHandler(EntityExistsException.class)

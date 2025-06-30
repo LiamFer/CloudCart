@@ -2,16 +2,20 @@ package com.liamfer.CloudCart.service;
 
 import com.liamfer.CloudCart.dto.APIMessage;
 import com.liamfer.CloudCart.dto.CreateUserDTO;
+import com.liamfer.CloudCart.dto.GeneratedTokenResponseDTO;
+import com.liamfer.CloudCart.dto.LoginUserDTO;
 import com.liamfer.CloudCart.entity.UserEntity;
 import com.liamfer.CloudCart.enums.UserRole;
 import com.liamfer.CloudCart.repository.UserRepository;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.security.auth.login.CredentialException;
 import java.util.Optional;
 
 @Service
@@ -19,10 +23,12 @@ public class AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
-    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager) {
+    private final JWTService jwtService;
+    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, JWTService jwtService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
+        this.jwtService = jwtService;
     }
 
     public void registerUser(CreateUserDTO createUserDTO){
@@ -39,6 +45,11 @@ public class AuthService {
         userRepository.save(user);
     }
 
+    public String loginUser(LoginUserDTO loginUserDTO){
+        var credentials = new UsernamePasswordAuthenticationToken(loginUserDTO.email(),loginUserDTO.password());
+        authenticationManager.authenticate(credentials);
+        return jwtService.generateToken(loginUserDTO.email());
+    }
 
     private UserDetails findUser(String email){
         Optional<UserDetails> user = userRepository.findByEmail(email);
