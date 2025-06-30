@@ -1,7 +1,7 @@
 package com.liamfer.CloudCart.controller;
 
-import com.liamfer.CloudCart.dto.product.CreateProductDTO;
-import com.liamfer.CloudCart.dto.product.CreatedProduct;
+import com.liamfer.CloudCart.dto.product.ProductDTO;
+import com.liamfer.CloudCart.dto.product.ProductResponseDTO;
 import com.liamfer.CloudCart.service.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -17,13 +17,14 @@ public class AdminController {
     }
 
     @PostMapping("/products")
-    public ResponseEntity<CreatedProduct> createNewProduct(@RequestBody @Valid CreateProductDTO newProduct){
+    public ResponseEntity<ProductResponseDTO> createNewProduct(@RequestBody @Valid ProductDTO newProduct){
         return ResponseEntity.status(HttpStatus.CREATED).body(productService.createNewProduct(newProduct));
     }
 
-    @PatchMapping("/products/{id}")
-    public ResponseEntity<?> updateProduct(@PathVariable("id") Long id){
-        return ResponseEntity.ok().build();
+    @PutMapping("/products/{id}")
+    public ResponseEntity<ProductResponseDTO> updateProduct(@PathVariable("id") Long id,
+                                                            @RequestBody @Valid ProductDTO product){
+        return ResponseEntity.status(HttpStatus.OK).body(productService.updateProduct(id,product));
     }
 
     @DeleteMapping("/products/{id}")
