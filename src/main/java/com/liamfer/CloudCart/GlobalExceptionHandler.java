@@ -1,6 +1,8 @@
 package com.liamfer.CloudCart;
 
 import com.liamfer.CloudCart.dto.APIMessage;
+import com.liamfer.CloudCart.exceptions.ProductNotEnoughInStockException;
+import com.liamfer.CloudCart.exceptions.ProductUnavailableException;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -45,6 +47,15 @@ public class GlobalExceptionHandler {
         APIMessage<String> message = new APIMessage<>(
                 HttpStatus.BAD_REQUEST.value(),
                 "Request body is missing or malformed"
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(message);
+    }
+
+    @ExceptionHandler({ProductUnavailableException.class, ProductNotEnoughInStockException.class})
+    public ResponseEntity<APIMessage<String>> handleProductUnavailableException(Exception ex) {
+        APIMessage<String> message = new APIMessage<>(
+                HttpStatus.BAD_REQUEST.value(),
+                ex.getMessage()
         );
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(message);
     }

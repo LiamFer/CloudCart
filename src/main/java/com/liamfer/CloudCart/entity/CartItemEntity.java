@@ -25,4 +25,10 @@ public class CartItemEntity extends BaseEntity {
     private ProductEntity product;
 
     private Integer quantity;
+
+    public CartItemEntity(CartEntity cart, ProductEntity product, Integer quantity) {
+        this.cart = cart;
+        this.product = product;
+        this.quantity = quantity;
+    }
 }
