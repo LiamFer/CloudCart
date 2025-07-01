@@ -36,6 +36,11 @@ public class ProductService {
         return productRepository.findAll(pageable).map(product -> modelMapper.map(product,ProductSimpleDTO.class));
     }
 
+    public ProductSimpleDTO findProductById(Long productID){
+        ProductEntity product = this.findProduct(productID);
+        return modelMapper.map(product, ProductSimpleDTO.class);
+    }
+
     public ProductResponseDTO createNewProduct(ProductDTO productDTO){
         ProductEntity product = modelMapper.map(productDTO,ProductEntity.class);
         return modelMapper.map(productRepository.save(product), ProductResponseDTO.class);

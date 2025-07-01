@@ -1,19 +1,18 @@
 package com.liamfer.CloudCart.dto.product;
 
 
-import lombok.AllArgsConstructor;
+import com.liamfer.CloudCart.dto.image.ImageResponseDTO;
+import lombok.*;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
+@Data
 public class ProductSimpleDTO {
     private Long id;
     private String name;
     private String description;
     private Double price;
+    private List<ImageResponseDTO> images;
 }

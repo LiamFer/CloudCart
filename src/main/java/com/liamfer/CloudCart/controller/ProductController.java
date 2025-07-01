@@ -22,7 +22,7 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProductSimpleDTO> getProducts(@PathVariable("id") Long id){
-        return ResponseEntity.ok().build();
+    public ResponseEntity<ProductSimpleDTO> getProduct(@PathVariable("id") Long id){
+        return ResponseEntity.status(HttpStatus.OK).body(productService.findProductById(id));
     }
 }
