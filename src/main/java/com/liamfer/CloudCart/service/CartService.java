@@ -13,6 +13,7 @@ import com.liamfer.CloudCart.repository.CartRepository;
 import com.liamfer.CloudCart.repository.ProductRepository;
 import com.liamfer.CloudCart.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -57,6 +58,15 @@ public class CartService {
         }
         CartItemEntity item = new CartItemEntity(cart,product,amount);
         return modelMapper.map(cartItemRepository.save(item),CartItemResponseDTO.class);
+    }
+
+    @Transactional
+    public void deleteCartItem(UserDetails userDetails, Long id){
+        UserEntity user = this.findUser(userDetails);
+        CartEntity cart = this.checkCartExistence(user);
+        Optional<CartItemEntity> cartItem = cartItemRepository.findByIdAndCartId(id,cart.getId());
+        if(cartItem.isEmpty()) throw new EntityNotFoundException("Item não encontrado no Carrinho");
+        cartItemRepository.deleteById(id);
     }
 
     // Busca o Carrinho, caso não exista cria um e retorna

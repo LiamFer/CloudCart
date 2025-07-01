@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -31,5 +32,5 @@ public class OrderEntity {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "order_id")
-    private List<OrderItemEntity> items;
+    private List<OrderItemEntity> items = new ArrayList<>();
 }

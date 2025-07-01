@@ -8,10 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/cart")
@@ -26,5 +23,12 @@ public class CartController {
     public ResponseEntity<CartItemResponseDTO> addItemToCart(@AuthenticationPrincipal UserDetails user,
                                                              @RequestBody @Valid AddCartItemDTO addCartItemDTO){
         return ResponseEntity.status(HttpStatus.CREATED).body(cartService.addItemInCart(user,addCartItemDTO));
+    }
+
+    @DeleteMapping("/item/{id}")
+    public ResponseEntity<CartItemResponseDTO> deleteCartItem(@AuthenticationPrincipal UserDetails user,
+                                               @PathVariable("id") Long id){
+        cartService.deleteCartItem(user,id);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

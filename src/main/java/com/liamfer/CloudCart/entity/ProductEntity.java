@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -37,6 +38,6 @@ public class ProductEntity extends BaseEntity{
     private Boolean available;
 
     @OneToMany(mappedBy = "product",cascade = CascadeType.ALL,orphanRemoval = true)
-    private List<ImageEntity> images;
+    private List<ImageEntity> images = new ArrayList<>();
 
 }
