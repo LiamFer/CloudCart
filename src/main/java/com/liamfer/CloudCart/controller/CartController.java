@@ -1,6 +1,7 @@
 package com.liamfer.CloudCart.controller;
 
 import com.liamfer.CloudCart.dto.cartItem.AddCartItemDTO;
+import com.liamfer.CloudCart.dto.cartItem.CartItemAmountDTO;
 import com.liamfer.CloudCart.dto.cartItem.CartItemResponseDTO;
 import com.liamfer.CloudCart.service.CartService;
 import jakarta.validation.Valid;
@@ -25,10 +26,17 @@ public class CartController {
         return ResponseEntity.status(HttpStatus.CREATED).body(cartService.addItemInCart(user,addCartItemDTO));
     }
 
+    @PatchMapping("/item/{id}")
+    public ResponseEntity<CartItemResponseDTO> editCartItemAmount(@AuthenticationPrincipal UserDetails user,
+                                                             @RequestBody @Valid CartItemAmountDTO cartItemAmountDTO,
+                                                                  @PathVariable("id") Long id){
+        return ResponseEntity.status(HttpStatus.OK).body(cartService.editCartItemAmount(user,id,cartItemAmountDTO));
+    }
+
     @DeleteMapping("/item/{id}")
     public ResponseEntity<CartItemResponseDTO> deleteCartItem(@AuthenticationPrincipal UserDetails user,
                                                @PathVariable("id") Long id){
         cartService.deleteCartItem(user,id);
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

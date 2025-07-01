@@ -1,6 +1,7 @@
 package com.liamfer.CloudCart.service;
 
 import com.liamfer.CloudCart.dto.cartItem.AddCartItemDTO;
+import com.liamfer.CloudCart.dto.cartItem.CartItemAmountDTO;
 import com.liamfer.CloudCart.dto.cartItem.CartItemResponseDTO;
 import com.liamfer.CloudCart.entity.CartEntity;
 import com.liamfer.CloudCart.entity.CartItemEntity;
@@ -57,6 +58,21 @@ public class CartService {
             return modelMapper.map(cartItemRepository.save(item),CartItemResponseDTO.class);
         }
         CartItemEntity item = new CartItemEntity(cart,product,amount);
+        return modelMapper.map(cartItemRepository.save(item),CartItemResponseDTO.class);
+    }
+
+    public CartItemResponseDTO editCartItemAmount(UserDetails userDetails,Long cartItemID,CartItemAmountDTO cartItemAmountDTO){
+        UserEntity user = this.findUser(userDetails);
+        CartEntity cart = this.checkCartExistence(user);
+        int amount = cartItemAmountDTO.getAmount();
+
+        Optional<CartItemEntity> cartItem = cartItemRepository.findByIdAndCartId(cartItemID,cart.getId());
+        if(cartItem.isEmpty()) throw new EntityNotFoundException("Item não encontrado no Carrinho");
+        CartItemEntity item = cartItem.get();
+        ProductEntity product = item.getProduct();
+
+        if(product.getStock() < amount) throw new ProductNotEnoughInStockException("Estoque Insuficiente");
+        item.setQuantity(amount);
         return modelMapper.map(cartItemRepository.save(item),CartItemResponseDTO.class);
     }
 
