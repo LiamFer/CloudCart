@@ -25,4 +25,7 @@ public class ProductDTO {
     @PositiveOrZero
     @NotNull
     private Integer stock;
+
+    @NotNull
+    private Boolean available;
 }

@@ -14,5 +14,6 @@ public class ProductSimpleDTO {
     private String name;
     private String description;
     private Double price;
+    private Boolean available;
     private List<ImageResponseDTO> images;
 }

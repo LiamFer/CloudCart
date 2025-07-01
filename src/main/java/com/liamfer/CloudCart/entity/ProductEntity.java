@@ -2,6 +2,7 @@ package com.liamfer.CloudCart.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.*;
@@ -31,6 +32,9 @@ public class ProductEntity extends BaseEntity{
 
     @PositiveOrZero
     private Integer stock;
+
+    @NotNull
+    private Boolean available;
 
     @OneToMany(mappedBy = "product",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<ImageEntity> images;

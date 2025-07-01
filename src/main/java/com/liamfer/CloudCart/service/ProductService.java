@@ -52,6 +52,7 @@ public class ProductService {
         product.setDescription(updateProduct.getDescription());
         product.setPrice(updateProduct.getPrice());
         product.setStock(updateProduct.getStock());
+        product.setAvailable(updateProduct.getAvailable());
         return modelMapper.map(productRepository.save(product), ProductResponseDTO.class);
     }
 

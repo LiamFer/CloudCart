@@ -48,8 +48,8 @@ public class AuthService {
         return jwtService.generateToken(loginUserDTO.email());
     }
 
-    private UserDetails findUser(String email){
-        Optional<UserDetails> user = userRepository.findByEmail(email);
+    private UserEntity findUser(String email){
+        Optional<UserEntity> user = userRepository.findByEmail(email);
         if(user.isPresent()) return user.get();
         throw new EntityNotFoundException("Resource not Found");
     }
