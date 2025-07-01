@@ -61,10 +61,40 @@ public class ProductService {
         return imageRepository.saveAll(images).stream().map(image -> modelMapper.map(image,ImageResponseDTO.class)).toList();
     }
 
+    public void deleteProductImage(Long imageID){
+        ImageEntity image = this.findImage(imageID);
+        String result = cloudinaryService.deleteImage(extractPublicIdFromUrl(image.getUrl()));
+        if(!result.equalsIgnoreCase("ok")) throw new RuntimeException("Cloudinary Error");
+        System.out.println("RESULT IS: " + result);
+        imageRepository.deleteById(imageID);
+    }
+
 
     private ProductEntity findProduct(Long id){
         Optional<ProductEntity> product = productRepository.findById(id);
         if(product.isPresent()) return product.get();
         throw new EntityNotFoundException("Resource not Found");
+    }
+
+    private ImageEntity findImage(Long id){
+        Optional<ImageEntity> product = imageRepository.findById(id);
+        if(product.isPresent()) return product.get();
+        throw new EntityNotFoundException("Resource not Found");
+    }
+
+    private String extractPublicIdFromUrl(String url) {
+        // Remove o prefixo até "/upload/"
+        int uploadIndex = url.indexOf("/upload/");
+        if (uploadIndex == -1) throw new IllegalArgumentException("URL inválida");
+
+        String path = url.substring(uploadIndex + "/upload/".length());
+        // Remove a versão (ex: v1751377699/)
+        String[] parts = path.split("/", 2);
+        if (parts.length < 2) throw new IllegalArgumentException("URL não contém caminho válido");
+
+        // Remove a extensão do arquivo
+        String filenameWithPath = parts[1];
+        int extensionIndex = filenameWithPath.lastIndexOf('.');
+        return extensionIndex != -1 ? filenameWithPath.substring(0, extensionIndex) : filenameWithPath;
     }
 }

@@ -43,4 +43,10 @@ public class AdminController {
         return ResponseEntity.status(HttpStatus.CREATED).body(productService.uploadProductImages(productID,images));
     }
 
+    @DeleteMapping("/products/images/{id}")
+    public ResponseEntity<List<ImageResponseDTO>> deleteImage(@PathVariable("id") Long imageID){
+        productService.deleteProductImage(imageID);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
 }

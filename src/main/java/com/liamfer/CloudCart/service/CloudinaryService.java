@@ -32,7 +32,7 @@ public class CloudinaryService {
         Map<String, Object> options = new HashMap<>();
         options.put("invalidate", true);
         try {
-            Map result = cloudinary.uploader().destroy("Produtos/" + publicId, options);
+            Map result = cloudinary.uploader().destroy(publicId, options);
             return (String) result.get("result");
         } catch (IOException e) {
             throw new RuntimeException("Erro ao deletar imagem do Cloudinary", e);
