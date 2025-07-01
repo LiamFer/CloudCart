@@ -20,4 +20,9 @@ public class ImageEntity extends BaseEntity{
     @ManyToOne
     @JoinColumn(name = "product_id")
     private ProductEntity product;
+
+    public ImageEntity(String url, ProductEntity product) {
+        this.url = url;
+        this.product = product;
+    }
 }
