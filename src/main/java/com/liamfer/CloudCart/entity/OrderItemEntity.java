@@ -29,4 +29,11 @@ public class OrderItemEntity {
 
     @Column(nullable = false)
     private Double price;
+
+    public OrderItemEntity(ProductEntity product, OrderEntity order, Integer quantity, Double price) {
+        this.product = product;
+        this.order = order;
+        this.quantity = quantity;
+        this.price = price;
+    }
 }

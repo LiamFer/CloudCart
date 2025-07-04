@@ -1,8 +1,11 @@
 package com.liamfer.CloudCart;
 
+import com.liamfer.CloudCart.dto.APICheckoutErrorMessage;
 import com.liamfer.CloudCart.dto.APIMessage;
+import com.liamfer.CloudCart.exceptions.EmptyCartException;
 import com.liamfer.CloudCart.exceptions.ProductNotEnoughInStockException;
 import com.liamfer.CloudCart.exceptions.ProductUnavailableException;
+import com.liamfer.CloudCart.exceptions.StockNotEnoughException;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -52,10 +55,29 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler({ProductUnavailableException.class, ProductNotEnoughInStockException.class})
-    public ResponseEntity<APIMessage<String>> handleProductUnavailableException(Exception ex) {
+    public ResponseEntity<APIMessage<String>> handleProductExceptions(Exception ex) {
         APIMessage<String> message = new APIMessage<>(
                 HttpStatus.BAD_REQUEST.value(),
                 ex.getMessage()
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(message);
+    }
+
+    @ExceptionHandler({EmptyCartException.class})
+    public ResponseEntity<APIMessage<String>> handleCartExceptions(Exception ex) {
+        APIMessage<String> message = new APIMessage<>(
+                HttpStatus.BAD_REQUEST.value(),
+                ex.getMessage()
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(message);
+    }
+
+    @ExceptionHandler(StockNotEnoughException.class)
+    public ResponseEntity<APICheckoutErrorMessage> handleStockNotEnoughException(StockNotEnoughException ex) {
+        APICheckoutErrorMessage message = new APICheckoutErrorMessage(
+                HttpStatus.BAD_REQUEST.value(),
+                ex.getMessage(),
+                ex.getProductIds()
         );
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(message);
     }
