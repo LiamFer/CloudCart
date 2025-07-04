@@ -10,6 +10,8 @@ import com.liamfer.CloudCart.repository.ProductRepository;
 import com.liamfer.CloudCart.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -51,6 +53,11 @@ public class CheckoutService {
         return modelMapper.map(orderRepository.save(order), OrderDTO.class);
     }
 
+    public Page<OrderDTO> getCheckoutOrders(UserDetails userDetails, Pageable pageable){
+        UserEntity user = this.findUser(userDetails);
+        return orderRepository.findAllByUserId(user.getId(),pageable).map(order -> modelMapper.map(order, OrderDTO.class));
+    }
+
     private void checkItemsStock(List<CartItemEntity> items){
         List<Long> ids = new ArrayList<>();
         for(CartItemEntity item : items){
@@ -66,6 +73,7 @@ public class CheckoutService {
         return items.stream().map(item -> {
             ProductEntity product = item.getProduct();
             int amount = product.getStock() - item.getQuantity();
+            if(amount == 0) product.setAvailable(false);
             product.setStock(amount);
             return new OrderItemEntity(productRepository.save(product),order,item.getQuantity(),product.getPrice());
         }).toList();
