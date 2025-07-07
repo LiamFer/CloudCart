@@ -1,6 +1,7 @@
 package com.liamfer.CloudCart.controller;
 
 import com.liamfer.CloudCart.dto.order.OrderDTO;
+import com.liamfer.CloudCart.dto.stripe.StripeResponse;
 import com.liamfer.CloudCart.service.CheckoutService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,7 +30,7 @@ public class CheckoutController {
     }
 
     @PostMapping
-    public ResponseEntity<OrderDTO> generateCheckoutOrder(@AuthenticationPrincipal UserDetails userDetails){
+    public ResponseEntity<StripeResponse> generateCheckoutOrder(@AuthenticationPrincipal UserDetails userDetails){
         return ResponseEntity.status(HttpStatus.CREATED).body(checkoutService.createCheckoutOrder(userDetails));
     }
 

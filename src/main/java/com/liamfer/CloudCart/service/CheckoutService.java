@@ -1,6 +1,7 @@
 package com.liamfer.CloudCart.service;
 
 import com.liamfer.CloudCart.dto.order.OrderDTO;
+import com.liamfer.CloudCart.dto.stripe.StripeResponse;
 import com.liamfer.CloudCart.entity.*;
 import com.liamfer.CloudCart.exceptions.EmptyCartException;
 import com.liamfer.CloudCart.exceptions.StockNotEnoughException;
@@ -25,17 +26,19 @@ public class CheckoutService {
     private final CartRepository cartRepository;
     private final ProductRepository productRepository;
     private final OrderRepository orderRepository;
+    private final StripeService stripeService;
     private final ModelMapper modelMapper;
 
-    public CheckoutService(UserRepository userRepository, CartRepository cartRepository, ProductRepository productRepository, OrderRepository orderRepository, ModelMapper modelMapper) {
+    public CheckoutService(UserRepository userRepository, CartRepository cartRepository, ProductRepository productRepository, OrderRepository orderRepository, StripeService stripeService, ModelMapper modelMapper) {
         this.userRepository = userRepository;
         this.cartRepository = cartRepository;
         this.productRepository = productRepository;
         this.orderRepository = orderRepository;
+        this.stripeService = stripeService;
         this.modelMapper = modelMapper;
     }
 
-    public OrderDTO createCheckoutOrder(UserDetails userDetails){
+    public StripeResponse createCheckoutOrder(UserDetails userDetails){
         UserEntity user = this.findUser(userDetails);
         CartEntity cart = this.checkCartExistence(user);
 
@@ -50,7 +53,9 @@ public class CheckoutService {
                 .reduce(0.0, Double::sum));
 
         cartRepository.deleteById(cart.getId());
-        return modelMapper.map(orderRepository.save(order), OrderDTO.class);
+        OrderEntity createdOrder = orderRepository.save(order);
+        return stripeService.createPayment(createdOrder.getItems());
+//        return modelMapper.map(orderRepository.save(order), OrderDTO.class);
     }
 
     public Page<OrderDTO> getCheckoutOrders(UserDetails userDetails, Pageable pageable){
