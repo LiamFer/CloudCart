@@ -1,4 +1,4 @@
-package com.liamfer.CloudCart.dto.cartItem;
+package com.liamfer.CloudCart.dto.cart;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;

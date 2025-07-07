@@ -1,4 +1,4 @@
-package com.liamfer.CloudCart.dto.cartItem;
+package com.liamfer.CloudCart.dto.cart;
 
 import com.liamfer.CloudCart.dto.product.ProductSimpleDTO;
 import lombok.AllArgsConstructor;

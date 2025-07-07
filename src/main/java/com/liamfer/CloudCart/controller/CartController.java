@@ -1,8 +1,9 @@
 package com.liamfer.CloudCart.controller;
 
-import com.liamfer.CloudCart.dto.cartItem.AddCartItemDTO;
-import com.liamfer.CloudCart.dto.cartItem.CartItemAmountDTO;
-import com.liamfer.CloudCart.dto.cartItem.CartItemResponseDTO;
+import com.liamfer.CloudCart.dto.cart.AddCartItemDTO;
+import com.liamfer.CloudCart.dto.cart.CartDTO;
+import com.liamfer.CloudCart.dto.cart.CartItemAmountDTO;
+import com.liamfer.CloudCart.dto.cart.CartItemResponseDTO;
 import com.liamfer.CloudCart.service.CartService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,11 @@ public class CartController {
 
     public CartController(CartService cartService) {
         this.cartService = cartService;
+    }
+
+    @GetMapping
+    public ResponseEntity<CartDTO> addItemToCart(@AuthenticationPrincipal UserDetails user){
+        return ResponseEntity.status(HttpStatus.OK).body(cartService.getCart(user));
     }
 
     @PostMapping

@@ -1,8 +1,9 @@
 package com.liamfer.CloudCart.service;
 
-import com.liamfer.CloudCart.dto.cartItem.AddCartItemDTO;
-import com.liamfer.CloudCart.dto.cartItem.CartItemAmountDTO;
-import com.liamfer.CloudCart.dto.cartItem.CartItemResponseDTO;
+import com.liamfer.CloudCart.dto.cart.AddCartItemDTO;
+import com.liamfer.CloudCart.dto.cart.CartDTO;
+import com.liamfer.CloudCart.dto.cart.CartItemAmountDTO;
+import com.liamfer.CloudCart.dto.cart.CartItemResponseDTO;
 import com.liamfer.CloudCart.entity.CartEntity;
 import com.liamfer.CloudCart.entity.CartItemEntity;
 import com.liamfer.CloudCart.entity.ProductEntity;
@@ -35,6 +36,12 @@ public class CartService {
         this.productRepository = productRepository;
         this.cartItemRepository = cartItemRepository;
         this.modelMapper = modelMapper;
+    }
+
+    public CartDTO getCart(UserDetails userDetails){
+        UserEntity user = this.findUser(userDetails);
+        CartEntity cart = this.checkCartExistence(user);
+        return modelMapper.map(cart,CartDTO.class);
     }
 
     public CartItemResponseDTO addItemInCart(UserDetails userDetails, AddCartItemDTO addCartItemDTO){
