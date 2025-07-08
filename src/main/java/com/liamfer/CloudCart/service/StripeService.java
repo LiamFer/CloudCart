@@ -2,6 +2,7 @@ package com.liamfer.CloudCart.service;
 
 import com.liamfer.CloudCart.dto.stripe.StripeResponse;
 import com.liamfer.CloudCart.entity.OrderItemEntity;
+import com.liamfer.CloudCart.repository.PaymentRepository;
 import com.stripe.Stripe;
 import com.stripe.model.checkout.Session;
 import com.stripe.param.checkout.SessionCreateParams;
@@ -12,8 +13,14 @@ import java.util.List;
 
 @Service
 public class StripeService {
+    private final PaymentRepository paymentRepository;
     @Value("${spring.stripe.key}")
     private String stripeKey;
+
+    public StripeService(PaymentRepository paymentRepository) {
+        this.paymentRepository = paymentRepository;
+    }
+
 
     public StripeResponse createPayment(List<OrderItemEntity> orderItems){
         Stripe.apiKey = stripeKey;
@@ -37,14 +44,13 @@ public class StripeService {
 
         SessionCreateParams params = SessionCreateParams.builder()
                 .setMode(SessionCreateParams.Mode.PAYMENT)
-                .setSuccessUrl("http://localhost:3000/sucess")
-                .setCancelUrl("http://localhost:3000/canceled")
+                .setSuccessUrl("http://localhost:3000/webhook/sucess")
+                .setCancelUrl("http://localhost:3000/webhook/canceled")
                 .addAllLineItem(lineItems)
                 .build();
 
         try{
             Session session = Session.create(params);
-
             return new StripeResponse(session.getStatus(),"Payment Created", session.getId(), session.getUrl());
         } catch (Exception e) {
             throw new RuntimeException(e);
