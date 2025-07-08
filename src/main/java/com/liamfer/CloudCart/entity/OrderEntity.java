@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,8 +26,8 @@ public class OrderEntity extends BaseEntity{
 
     private Double total;
 
-//    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
-//    private PaymentEntity payment;
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
+    private PaymentEntity payment;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "order_id")
