@@ -54,7 +54,7 @@ public class CheckoutService {
 
         cartRepository.deleteById(cart.getId());
         OrderEntity createdOrder = orderRepository.save(order);
-        return stripeService.createPayment(createdOrder.getItems());
+        return stripeService.createPayment(createdOrder);
 //        return modelMapper.map(orderRepository.save(order), OrderDTO.class);
     }
 
