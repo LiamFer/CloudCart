@@ -6,6 +6,7 @@ import com.liamfer.CloudCart.entity.OrderItemEntity;
 import com.liamfer.CloudCart.entity.PaymentEntity;
 import com.liamfer.CloudCart.entity.ProductEntity;
 import com.liamfer.CloudCart.repository.PaymentRepository;
+import com.liamfer.CloudCart.repository.ProductRepository;
 import com.stripe.Stripe;
 import com.stripe.model.Event;
 import com.stripe.model.PaymentIntent;
@@ -22,11 +23,13 @@ import java.util.Optional;
 @Service
 public class StripeService {
     private final PaymentRepository paymentRepository;
+    private final ProductRepository productRepository;
     @Value("${spring.stripe.key}")
     private String stripeKey;
 
-    public StripeService(PaymentRepository paymentRepository) {
+    public StripeService(PaymentRepository paymentRepository, ProductRepository productRepository) {
         this.paymentRepository = paymentRepository;
+        this.productRepository = productRepository;
     }
 
 
@@ -85,7 +88,28 @@ public class StripeService {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
 
+    public void cancelPayment(Long paymentId) {
+        PaymentEntity payment = this.findPaymentById(paymentId);
+        try {
+            Session session = Session.retrieve(payment.getStripePaymentId());
+            String paymentIntentId = session.getPaymentIntent();
+
+            PaymentIntent paymentIntent = PaymentIntent.retrieve(paymentIntentId);
+            PaymentIntent canceledIntent = paymentIntent.cancel();
+
+            payment.setStatus(canceledIntent.getStatus());
+            paymentRepository.save(payment);
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao cancelar o pagamento", e);
+        }
+    }
+
+    private PaymentEntity findPaymentById(Long paymentId){
+        Optional<PaymentEntity> payment = paymentRepository.findById(paymentId);
+        if(payment.isPresent()) return payment.get();
+        throw new EntityNotFoundException("Resource not Found");
     }
 
     private PaymentEntity findPayment(String paymentId){
