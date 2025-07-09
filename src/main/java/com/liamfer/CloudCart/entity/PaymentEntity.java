@@ -28,14 +28,19 @@ public class PaymentEntity extends BaseEntity {
     @Column(nullable = false)
     private Double amount;
 
-    public PaymentEntity(String stripePaymentId, String status, Double amount, OrderEntity order) {
-        this.stripePaymentId = stripePaymentId;
-        this.status = status;
-        this.amount = amount;
-        this.order = order;
-    }
+    @Column(name = "session_url", columnDefinition = "TEXT")
+    private String sessionUrl;
 
     @OneToOne
     @JoinColumn(name = "order_id", nullable = false)
     private OrderEntity order;
+
+    public PaymentEntity(String stripePaymentId, String status, Double amount, OrderEntity order,String sessionUrl) {
+        this.stripePaymentId = stripePaymentId;
+        this.status = status;
+        this.amount = amount;
+        this.order = order;
+        this.sessionUrl = sessionUrl;
+    }
+
 }

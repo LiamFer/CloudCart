@@ -35,7 +35,9 @@ public class CheckoutController {
     @PostMapping("/cancel/{id}")
     public ResponseEntity<APIMessage<String>> cancelCheckoutOrder(@AuthenticationPrincipal UserDetails userDetails,
                                                                   @PathVariable("id") Long paymentId){
-        return ResponseEntity.status(HttpStatus.CREATED).body(checkoutService.createCheckoutOrder(userDetails));
+        checkoutService.cancelCheckoutOrder(userDetails,paymentId);
+        APIMessage<String> response = new APIMessage<>(HttpStatus.OK.value(), "Order Canceled Successfully");
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
 }

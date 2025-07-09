@@ -14,4 +14,5 @@ public class OrderDTO {
     private Long id;
     private Double total;
     private List<OrderItemDTO> items = new ArrayList<>();
+    private PaymentDTO payment;
 }

@@ -5,6 +5,7 @@ import com.liamfer.CloudCart.entity.OrderEntity;
 import com.liamfer.CloudCart.entity.OrderItemEntity;
 import com.liamfer.CloudCart.entity.PaymentEntity;
 import com.liamfer.CloudCart.entity.ProductEntity;
+import com.liamfer.CloudCart.exceptions.PaymentAlreadyCanceledException;
 import com.liamfer.CloudCart.repository.PaymentRepository;
 import com.liamfer.CloudCart.repository.ProductRepository;
 import com.stripe.Stripe;
@@ -60,7 +61,7 @@ public class StripeService {
 
         try{
             Session session = Session.create(params);
-            PaymentEntity payment = new PaymentEntity(session.getId(), session.getStatus(), order.getTotal(), order);
+            PaymentEntity payment = new PaymentEntity(session.getId(), session.getStatus(), order.getTotal(), order, session.getUrl());
             paymentRepository.save(payment);
             return new StripeResponse(session.getStatus(),"Payment Created", session.getId(), session.getUrl());
         } catch (Exception e) {
@@ -88,20 +89,27 @@ public class StripeService {
         }
     }
 
-    public PaymentEntity cancelPayment(Long paymentId) {
-        PaymentEntity payment = this.findPaymentById(paymentId);
-        try {
-            Session session = Session.retrieve(payment.getStripePaymentId());
-            String paymentIntentId = session.getPaymentIntent();
+//    public void cancelPayment(PaymentEntity payment) {
+//        try {
+//            Stripe.apiKey = stripeKey;
+//            Session session = Session.retrieve(payment.getStripePaymentId());
+//            String paymentIntentId = session.getPaymentIntent();
+//
+//            PaymentIntent paymentIntent = PaymentIntent.retrieve(paymentIntentId);
+//            PaymentIntent canceledIntent = paymentIntent.cancel();
+//
+//            payment.setStatus(canceledIntent.getStatus());
+//            paymentRepository.save(payment);
+//        } catch (Exception e) {
+//            throw new RuntimeException(e.getMessage(), e);
+//        }
+//    }
 
-            PaymentIntent paymentIntent = PaymentIntent.retrieve(paymentIntentId);
-            PaymentIntent canceledIntent = paymentIntent.cancel();
-
-            payment.setStatus(canceledIntent.getStatus());
-            return paymentRepository.save(payment);
-        } catch (Exception e) {
-            throw new RuntimeException("Erro ao cancelar o pagamento", e);
-        }
+    public void cancelPayment(PaymentEntity payment) {
+        if(!payment.getStatus().equals("open")) throw new PaymentAlreadyCanceledException("Cannot cancel this Payment");
+        payment.setStatus("canceled");
+        payment.setSessionUrl(null);
+        paymentRepository.save(payment);
     }
 
     private PaymentEntity findPaymentById(Long paymentId){

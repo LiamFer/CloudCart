@@ -59,6 +59,19 @@ public class CheckoutService {
     }
 
     public void cancelCheckoutOrder(UserDetails userDetails,Long paymentId){
+        UserEntity user = this.findUser(userDetails);
+        OrderEntity order = this.findOrderByUserAndPaymentId(user,paymentId);
+        stripeService.cancelPayment(order.getPayment());
+
+        // Restaurando o Estoque pois o pedido foi cancelado
+        List<ProductEntity> products = order.getItems().stream().map(item -> {
+           ProductEntity product = item.getProduct();
+           Integer amount = product.getStock() + item.getQuantity();
+           product.setStock(amount);
+           return product;
+        }).toList();
+
+        productRepository.saveAll(products);
 
     }
 
