@@ -23,13 +23,11 @@ import java.util.Optional;
 @Service
 public class StripeService {
     private final PaymentRepository paymentRepository;
-    private final ProductRepository productRepository;
     @Value("${spring.stripe.key}")
     private String stripeKey;
 
-    public StripeService(PaymentRepository paymentRepository, ProductRepository productRepository) {
+    public StripeService(PaymentRepository paymentRepository) {
         this.paymentRepository = paymentRepository;
-        this.productRepository = productRepository;
     }
 
 
@@ -90,7 +88,7 @@ public class StripeService {
         }
     }
 
-    public void cancelPayment(Long paymentId) {
+    public PaymentEntity cancelPayment(Long paymentId) {
         PaymentEntity payment = this.findPaymentById(paymentId);
         try {
             Session session = Session.retrieve(payment.getStripePaymentId());
@@ -100,7 +98,7 @@ public class StripeService {
             PaymentIntent canceledIntent = paymentIntent.cancel();
 
             payment.setStatus(canceledIntent.getStatus());
-            paymentRepository.save(payment);
+            return paymentRepository.save(payment);
         } catch (Exception e) {
             throw new RuntimeException("Erro ao cancelar o pagamento", e);
         }

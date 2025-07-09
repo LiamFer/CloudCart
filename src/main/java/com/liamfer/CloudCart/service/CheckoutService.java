@@ -58,6 +58,12 @@ public class CheckoutService {
 //        return modelMapper.map(orderRepository.save(order), OrderDTO.class);
     }
 
+    public void cancelCheckoutOrder(UserDetails userDetails,Long paymentId){
+
+    }
+
+
+
     public Page<OrderDTO> getCheckoutOrders(UserDetails userDetails, Pageable pageable){
         UserEntity user = this.findUser(userDetails);
         return orderRepository.findAllByUserId(user.getId(),pageable).map(order -> modelMapper.map(order, OrderDTO.class));
@@ -82,6 +88,12 @@ public class CheckoutService {
             product.setStock(amount);
             return new OrderItemEntity(productRepository.save(product),order,item.getQuantity(),product.getPrice());
         }).toList();
+    }
+
+    private OrderEntity findOrderByUserAndPaymentId(UserEntity user,Long paymentId){
+        Optional<OrderEntity> order = orderRepository.findByUserAndPaymentId(user,paymentId);
+        if(order.isPresent()) return order.get();
+        throw new EntityNotFoundException("Order Not Found");
     }
 
     private CartEntity checkCartExistence(UserEntity user){
