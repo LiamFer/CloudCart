@@ -35,11 +35,10 @@ public class StripeController {
         try (Scanner scanner = new Scanner(request.getInputStream(), "UTF-8")) {
             payload = scanner.useDelimiter("\\A").next();
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("⚠️ Erro ao ler o corpo da requisição");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid Stripe Request");
         }
 
         Event event;
-
         try {
             event = Webhook.constructEvent(
                     payload, sigHeader, endpointSecret
@@ -55,6 +54,6 @@ public class StripeController {
             stripeService.updatePayment(session);
         }
 
-        return ResponseEntity.ok("✅ Recebido");
+        return ResponseEntity.ok("Recebido");
     }
 }

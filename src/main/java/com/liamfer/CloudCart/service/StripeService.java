@@ -74,7 +74,7 @@ public class StripeService {
             PaymentIntent paymentIntent = PaymentIntent.retrieve(paymentId);
             String status = paymentIntent.getStatus();
 
-//             Pegando o método de pagamento utilizado
+            // Pegando o método de pagamento utilizado
             String paymentMethodId = paymentIntent.getPaymentMethod();
             PaymentMethod paymentMethodObj = PaymentMethod.retrieve(paymentMethodId);
             String paymentMethodType = paymentMethodObj.getType();
