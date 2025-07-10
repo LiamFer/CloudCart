@@ -40,4 +40,11 @@ public class ProductEntity extends BaseEntity{
     @OneToMany(mappedBy = "product",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<ImageEntity> images = new ArrayList<>();
 
+    public ProductEntity(String name, String description, Double price, Integer stock, Boolean available) {
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.stock = stock;
+        this.available = available;
+    }
 }
