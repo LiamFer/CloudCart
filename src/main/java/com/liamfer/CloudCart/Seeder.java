@@ -35,6 +35,12 @@ public class Seeder implements CommandLineRunner {
             admin.setPassword(passwordEncoder.encode("123456"));
             admin.setRole(UserRole.ADMIN);
             userRepository.save(admin);
+
+            UserEntity user = new UserEntity();
+            user.setEmail("user@email.com");
+            user.setPassword(passwordEncoder.encode("123456"));
+            user.setRole(UserRole.STANDARD);
+            userRepository.save(user);
         }
 
 
