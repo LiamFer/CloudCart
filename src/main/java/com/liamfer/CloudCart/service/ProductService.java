@@ -7,6 +7,7 @@ import com.liamfer.CloudCart.dto.product.ProductSimpleDTO;
 import com.liamfer.CloudCart.entity.ImageEntity;
 import com.liamfer.CloudCart.entity.ProductEntity;
 import com.liamfer.CloudCart.repository.ImageRepository;
+import com.liamfer.CloudCart.repository.OrderItemRepository;
 import com.liamfer.CloudCart.repository.ProductRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
@@ -22,12 +23,14 @@ import java.util.Optional;
 public class ProductService {
     private final ProductRepository productRepository;
     private final ImageRepository imageRepository;
+    private final OrderItemRepository orderItemRepository;
     private final ModelMapper modelMapper;
     private final CloudinaryService cloudinaryService;
 
-    public ProductService(ProductRepository productRepository, ImageRepository imageRepository, ModelMapper modelMapper, CloudinaryService cloudinaryService) {
+    public ProductService(ProductRepository productRepository, ImageRepository imageRepository, OrderItemRepository orderItemRepository, ModelMapper modelMapper, CloudinaryService cloudinaryService) {
         this.productRepository = productRepository;
         this.imageRepository = imageRepository;
+        this.orderItemRepository = orderItemRepository;
         this.modelMapper = modelMapper;
         this.cloudinaryService = cloudinaryService;
     }
@@ -58,6 +61,7 @@ public class ProductService {
 
     public void deleteProduct(Long id){
         this.findProduct(id);
+        if(this.orderItemRepository.findAllByProductId(id).isPresent()) throw new ProductInOrderException("Produto pertence a um pedido e não pode ser deletado");
         productRepository.deleteById(id);
     }
 
