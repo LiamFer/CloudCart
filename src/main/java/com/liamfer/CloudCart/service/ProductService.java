@@ -6,6 +6,7 @@ import com.liamfer.CloudCart.dto.product.ProductResponseDTO;
 import com.liamfer.CloudCart.dto.product.ProductSimpleDTO;
 import com.liamfer.CloudCart.entity.ImageEntity;
 import com.liamfer.CloudCart.entity.ProductEntity;
+import com.liamfer.CloudCart.exceptions.ProductInOrderException;
 import com.liamfer.CloudCart.repository.ImageRepository;
 import com.liamfer.CloudCart.repository.OrderItemRepository;
 import com.liamfer.CloudCart.repository.ProductRepository;
@@ -61,7 +62,7 @@ public class ProductService {
 
     public void deleteProduct(Long id){
         this.findProduct(id);
-        if(this.orderItemRepository.findAllByProductId(id).isPresent()) throw new ProductInOrderException("Produto pertence a um pedido e não pode ser deletado");
+        if(!this.orderItemRepository.findAllByProductId(id).isEmpty()) throw new ProductInOrderException("Produto pertence a um pedido e não pode ser deletado");
         productRepository.deleteById(id);
     }
 

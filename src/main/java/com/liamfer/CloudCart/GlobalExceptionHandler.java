@@ -51,7 +51,8 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(message);
     }
 
-    @ExceptionHandler({ProductUnavailableException.class, ProductNotEnoughInStockException.class})
+    @ExceptionHandler({ProductUnavailableException.class, ProductNotEnoughInStockException.class,
+            ProductInOrderException.class})
     public ResponseEntity<APIMessage<String>> handleProductExceptions(Exception ex) {
         APIMessage<String> message = new APIMessage<>(
                 HttpStatus.BAD_REQUEST.value(),
