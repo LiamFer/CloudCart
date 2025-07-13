@@ -93,6 +93,16 @@ public class AdminController {
     }
 
 
+    @Operation(summary = "Deleta a Imagem de um Produto no Cloudinary")
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "Imagem deletada com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Imagem não encontrada",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = APIMessage.class))),
+            @ApiResponse(responseCode = "400", description = "Dados inválidos",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = APIMessage.class))),
+            @ApiResponse(responseCode = "500", description = "Erro ao deletar imagem do Cloudinary",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = APIMessage.class)))
+    })
     @DeleteMapping("/products/images/{id}")
     public ResponseEntity<List<ImageResponseDTO>> deleteImage(@PathVariable("id") Long imageID) {
         productService.deleteProductImage(imageID);
