@@ -4,6 +4,7 @@ import com.liamfer.CloudCart.dto.image.ImageResponseDTO;
 import com.liamfer.CloudCart.dto.product.ProductDTO;
 import com.liamfer.CloudCart.dto.product.ProductResponseDTO;
 import com.liamfer.CloudCart.service.ProductService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/admin")
+@SecurityRequirement(name = "bearerAuth")
 public class AdminController {
     private final ProductService productService;
     public AdminController(ProductService productService) {
