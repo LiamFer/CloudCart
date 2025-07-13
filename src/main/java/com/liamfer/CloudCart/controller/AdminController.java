@@ -6,6 +6,7 @@ import com.liamfer.CloudCart.dto.product.ProductDTO;
 import com.liamfer.CloudCart.dto.product.ProductResponseDTO;
 import com.liamfer.CloudCart.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -54,17 +55,43 @@ public class AdminController {
         return ResponseEntity.status(HttpStatus.OK).body(productService.updateProduct(id, product));
     }
 
+    @Operation(summary = "Deleta um Produto do Site")
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "Produto deletado com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Produto não encontrado",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = APIMessage.class))),
+            @ApiResponse(responseCode = "400", description = "Dados inválidos",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = APIMessage.class))),
+            @ApiResponse(responseCode = "400", description = "Produto pertence a um pedido e não pode ser deletado",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = APIMessage.class)))
+    })
     @DeleteMapping("/products/{id}")
     public ResponseEntity<Void> deleteProduct(@PathVariable("id") Long id) {
         productService.deleteProduct(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @PostMapping("/products/{id}/images")
-    public ResponseEntity<List<ImageResponseDTO>> uploadImages(@PathVariable("id") Long productID,
-                                                               @RequestPart("image") List<MultipartFile> images) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(productService.uploadProductImages(productID, images));
+    @Operation(summary = "Faz Upload das Imagens de um Produto no Cloudinary")
+    @ApiResponses({
+            @ApiResponse(responseCode = "201", description = "Imagens salvas com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Produto não encontrado",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = APIMessage.class))),
+            @ApiResponse(responseCode = "400", description = "Dados inválidos",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = APIMessage.class))),
+            @ApiResponse(responseCode = "500", description = "Erro ao fazer upload para o Cloudinary",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = APIMessage.class)))
+    })
+    @PostMapping(value = "/products/{id}/images", consumes = "multipart/form-data")
+    public ResponseEntity<List<ImageResponseDTO>> uploadImages(
+            @PathVariable("id") Long productID,
+            @Parameter(description = "Imagens do produto", required = true,
+                    content = @Content(mediaType = "application/octet-stream",
+                            schema = @Schema(type = "string", format = "binary")))
+            @RequestPart("image") List<MultipartFile> images) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(productService.uploadProductImages(productID, images));
     }
+
 
     @DeleteMapping("/products/images/{id}")
     public ResponseEntity<List<ImageResponseDTO>> deleteImage(@PathVariable("id") Long imageID) {
