@@ -29,10 +29,20 @@ public class SwaggerConfig {
     }
 
     @Bean
+    public GroupedOpenApi adminApi() {
+        return GroupedOpenApi.builder()
+                .group("admin")
+                .pathsToMatch("/admin/**","/stripe/**")
+                .build();
+    }
+
+    @Bean
     public GroupedOpenApi publicApi() {
         return GroupedOpenApi.builder()
                 .group("public")
                 .pathsToMatch("/**")
+                .pathsToExclude("/admin/**","/stripe/**")
                 .build();
     }
+
 }
