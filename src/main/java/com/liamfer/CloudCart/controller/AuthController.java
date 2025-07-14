@@ -38,7 +38,12 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.CREATED).body(new APIMessage<String>(HttpStatus.CREATED.value(), "Usuário criado!"));
     }
 
-
+    @Operation(summary = "Faz Login com as Credenciais de um usuário")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Login realizado com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Dados inválidos",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = APIMessage.class)))
+    })
     @PostMapping("/login")
     public ResponseEntity<GeneratedTokenResponseDTO> registerUser(@RequestBody @Valid LoginUserDTO LoginUserDTO){
         String token = authService.loginUser(LoginUserDTO);
