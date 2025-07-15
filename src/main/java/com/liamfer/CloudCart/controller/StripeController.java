@@ -1,11 +1,17 @@
 package com.liamfer.CloudCart.controller;
 
+import com.liamfer.CloudCart.dto.APIMessage;
 import com.liamfer.CloudCart.service.StripeService;
 import com.stripe.exception.SignatureVerificationException;
 import com.stripe.model.Event;
 import com.stripe.model.PaymentIntent;
 import com.stripe.model.checkout.Session;
 import com.stripe.net.Webhook;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -27,6 +33,11 @@ public class StripeController {
         this.stripeService = stripeService;
     }
 
+    @Operation(summary = "Webhook para Transações do Stripe")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Recebido"),
+            @ApiResponse(responseCode = "400", description = "Requisição Inválida do Stripe",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = APIMessage.class)))})
     @PostMapping("/webhook")
     public ResponseEntity<String> handleStripeWebhook(HttpServletRequest request) {
         String payload;
