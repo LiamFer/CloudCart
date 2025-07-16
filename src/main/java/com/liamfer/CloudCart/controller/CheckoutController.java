@@ -5,6 +5,8 @@ import com.liamfer.CloudCart.dto.order.OrderDTO;
 import com.liamfer.CloudCart.dto.stripe.StripeResponse;
 import com.liamfer.CloudCart.service.CheckoutService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.data.domain.Page;
@@ -33,6 +35,14 @@ public class CheckoutController {
         return ResponseEntity.status(HttpStatus.OK).body(checkoutService.getCheckoutOrders(userDetails,pageable));
     }
 
+    @Operation(summary = "Gera uma Ordem de Compra usando o Carrinho do Usuário")
+    @ApiResponses({
+            @ApiResponse(responseCode = "201", description = "Ordem gerada com sucesso"),
+            @ApiResponse(responseCode = "400", description = "O Carrinho está vazio",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = APIMessage.class))),
+            @ApiResponse(responseCode = "400", description = "Estoque insuficiente para alguns produtos",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = APIMessage.class)))
+    })
     @PostMapping
     public ResponseEntity<StripeResponse> generateCheckoutOrder(@AuthenticationPrincipal UserDetails userDetails){
         return ResponseEntity.status(HttpStatus.CREATED).body(checkoutService.createCheckoutOrder(userDetails));
