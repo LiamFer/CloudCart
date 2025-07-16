@@ -4,6 +4,9 @@ import com.liamfer.CloudCart.dto.APIMessage;
 import com.liamfer.CloudCart.dto.order.OrderDTO;
 import com.liamfer.CloudCart.dto.stripe.StripeResponse;
 import com.liamfer.CloudCart.service.CheckoutService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -21,6 +24,9 @@ public class CheckoutController {
         this.checkoutService = checkoutService;
     }
 
+    @Operation(summary = "Retorna informações das Ordens de Compra do Usuário")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Dados retornados com sucesso")})
     @GetMapping
     public ResponseEntity<Page<OrderDTO>> getUserCheckoutOrders(@AuthenticationPrincipal UserDetails userDetails,
                                                                 Pageable pageable){
