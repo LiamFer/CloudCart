@@ -48,6 +48,12 @@ public class CheckoutController {
         return ResponseEntity.status(HttpStatus.CREATED).body(checkoutService.createCheckoutOrder(userDetails));
     }
 
+    @Operation(summary = "Cancela uma Ordem de Compra Específica")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Ordem cancelada com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Ordem não encontrada",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = APIMessage.class)))
+    })
     @PostMapping("/cancel/{id}")
     public ResponseEntity<APIMessage<String>> cancelCheckoutOrder(@AuthenticationPrincipal UserDetails userDetails,
                                                                   @PathVariable("id") Long paymentId){
