@@ -22,7 +22,7 @@ public class CartController {
     }
 
     @GetMapping
-    public ResponseEntity<CartDTO> addItemToCart(@AuthenticationPrincipal UserDetails user){
+    public ResponseEntity<CartDTO> getCartItems(@AuthenticationPrincipal UserDetails user){
         return ResponseEntity.status(HttpStatus.OK).body(cartService.getCart(user));
     }
 
