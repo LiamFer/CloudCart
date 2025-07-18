@@ -62,6 +62,7 @@ public class Seeder implements CommandLineRunner {
                     new ProductEntity("Placa de Vídeo RTX 4060 Ti", "8GB GDDR6, DLSS 3, Ray Tracing", 2699.00, 4, true)
             );
             productRepository.saveAll(products);
+            System.out.println("✅ Produtos Criados com sucesso!");
         }
 
 
