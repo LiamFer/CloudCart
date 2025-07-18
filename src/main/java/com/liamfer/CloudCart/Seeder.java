@@ -38,6 +38,7 @@ public class Seeder implements CommandLineRunner {
             admin.setPassword(passwordEncoder.encode("123456"));
             admin.setRole(UserRole.ADMIN);
             userRepository.save(admin);
+            System.out.println("✅ Admin User criado com sucesso!");
 
             UserEntity user = new UserEntity();
             user.setName("Jane Smith");
@@ -46,6 +47,7 @@ public class Seeder implements CommandLineRunner {
             user.setPassword(passwordEncoder.encode("123456"));
             user.setRole(UserRole.STANDARD);
             userRepository.save(user);
+            System.out.println("✅ Standard User criado com sucesso!");
         }
 
         if (productRepository.count() == 0) {
