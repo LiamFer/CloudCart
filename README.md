@@ -14,10 +14,11 @@ Uma API REST robusta e escalável para E-commerce desenvolvida com **Spring Boot
 
 ## 📚 Tecnologias Utilizadas
 
-- Java 21 + Spring Boot 3
+- Java 17 + Spring Boot 3
 - PostgreSQL
 - Stripe API
 - Cloudinary SDK
+- JWT
 - Maven
 
 ## 🚀 Começando
