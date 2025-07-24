@@ -1,6 +1,6 @@
 # 🛒 CloudCart - API REST de E-commerce
 
-> Este projeto faz parte do [Desafio de API E-commerce do Roadmap.sh](https://roadmap.sh/projects/ecommerce-api)
+> Este projeto faz parte do [Desafio de E-commerce do Roadmap.sh](https://roadmap.sh/projects/ecommerce-api)
 Uma API REST robusta e escalável para E-commerce desenvolvida com **Spring Boot**.
 
 ## ✨ Funcionalidades
