@@ -27,6 +27,7 @@ public class SecurityConfig {
                         authorize.requestMatchers("/auth/**").permitAll()
                                 .requestMatchers("/admin/**").hasRole("ADMIN")
                                 .requestMatchers("/stripe/**").permitAll()
+                                .requestMatchers("/products/**").permitAll()
                                 .requestMatchers(
                                         "/swagger-ui.html",
                                         "/swagger-ui/**",
