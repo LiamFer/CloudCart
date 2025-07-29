@@ -24,6 +24,14 @@ public class ProductControllerTest {
     private ProductService productService;
 
     @Test
+    public void shouldReturnPagedProducts() throws Exception {
+        mockMvc.perform(get("/products")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(print());
+    }
+
+    @Test
     public void shouldReturnProductById() throws Exception {
         mockMvc.perform(get("/products/34232")
                         .accept(MediaType.APPLICATION_JSON))
