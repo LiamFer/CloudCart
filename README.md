@@ -51,3 +51,29 @@ src
 ```bash
 ./mvnw test
 ```
+
+## 🌱 Seed de Dados
+
+Para facilitar os testes locais, foi adicionado um **Seeder** que popula o banco com:
+
+- 2 usuários (admin e padrão)
+- 10 produtos de exemplo
+
+### 🔧 Como rodar o seed
+
+Execute a aplicação com o argumento `--seed`:
+
+```bash
+./mvnw spring-boot:run -Dspring-boot.run.arguments=--seed
+````
+
+> ⚠️ O seed **só será executado** se os repositórios de usuários e produtos estiverem vazios.
+
+### 👤 Usuários criados
+
+| Tipo   | Email                                     | Senha  |
+| ------ | ----------------------------------------- | ------ |
+| Admin  | [admin@email.com](mailto:admin@email.com) | 123456 |
+| Padrão | [user@email.com](mailto:user@email.com)   | 123456 |
+
+
