@@ -1,4 +1,15 @@
-# 🛒 CloudCart - API REST de E-commerce
+# 🛒 CloudCart - E-commerce REST API
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Java-17-007396?style=for-the-badge&logo=java&logoColor=white" />
+  <img src="https://img.shields.io/badge/Spring_Boot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white" />
+  <img src="https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white" />
+  <img src="https://img.shields.io/badge/Maven-C71A36?style=for-the-badge&logo=apachemaven&logoColor=white" />
+  <img src="https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=jsonwebtokens&logoColor=white" />
+  <img src="https://img.shields.io/badge/Stripe-635BFF?style=for-the-badge&logo=stripe&logoColor=white" />
+  <img src="https://img.shields.io/badge/Cloudinary-3448C5?style=for-the-badge&logo=cloudinary&logoColor=white" />
+  <img src="https://img.shields.io/badge/Swagger_UI-85EA2D?style=for-the-badge&logo=swagger&logoColor=black" />
+</p>
 
 > Este projeto faz parte do [Desafio de E-commerce do Roadmap.sh](https://roadmap.sh/projects/ecommerce-api)  
 > Uma API REST robusta, escalável e moderna para e-commerce, construída com **Spring Boot**.
@@ -14,7 +25,7 @@
 - 🧾 Validação de entrada e tratamento centralizado de exceções
 - ⚙️ Rotas administrativas exclusivas para admins
 - 📦 API de Checkout com cancelamento de pagamentos
-- 📈 Documentação interativa com **Swagger**
+- 📈 Documentação interativa com **Swagger** (Admin & Public)
 
 ---
 
