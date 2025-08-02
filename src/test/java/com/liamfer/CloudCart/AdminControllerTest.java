@@ -39,4 +39,16 @@ public class AdminControllerTest {
         return JsonPath.read(responseBody, "$.token");
     }
 
+    @Test
+    void shouldCreateNewProduct() throws Exception {
+        ProductDTO dto = new ProductDTO("Tênis Nike Air", "Confortável e estiloso", 499.90, 10, true);
+        String json = new ObjectMapper().writeValueAsString(dto);
+        mockMvc.perform(post("/admin/products")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + this.generateAuthToken())
+                        .content(json))
+                .andExpect(status().isCreated())
+                .andDo(print());
+    }
+
 }
