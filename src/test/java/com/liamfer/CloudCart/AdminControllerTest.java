@@ -60,7 +60,7 @@ public class AdminControllerTest {
         // Testando Update no Produto
         ProductDTO putDto = new ProductDTO("Tênis Adidas Speed 2", "Meia Maratona Ideal", 199.90, 15, true);
         String putJson = new ObjectMapper().writeValueAsString(putDto);
-        MvcResult putResult = mockMvc.perform(put("/admin/products/"+productId)
+        mockMvc.perform(put("/admin/products/"+productId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + token)
                         .content(putJson))
@@ -68,6 +68,12 @@ public class AdminControllerTest {
                 .andReturn();
         System.out.printf("PUT: Produto %d editado com Sucesso!\n",productId);
 
+        // Teste de Deletar o Produto
+        mockMvc.perform(delete("/admin/products/"+productId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + token))
+                .andExpect(status().isNoContent());
+        System.out.printf("DELETE: Produto %d deletado com Sucesso!\n",productId);
     }
 
 }
