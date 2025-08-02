@@ -46,5 +46,13 @@ public class ProductControllerTest {
                 .andDo(print());
     }
 
+    @Test
+    void shouldNotReturnProductById() throws Exception {
+        mockMvc.perform(get("/products/-1")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andDo(print());
+    }
+
 }
 
