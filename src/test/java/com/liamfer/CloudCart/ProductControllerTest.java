@@ -28,15 +28,16 @@ public class ProductControllerTest {
         mockMvc.perform(get("/products")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andDo(print());
+                .andExpect(jsonPath("$.content").isArray());
     }
 
     @Test
     void shouldReturnProductById() throws Exception {
-        mockMvc.perform(get("/products/34232")
+        mockMvc.perform(get("/products/34")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());
     }
+
 }
 
