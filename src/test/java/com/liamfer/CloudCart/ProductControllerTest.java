@@ -1,11 +1,14 @@
 package com.liamfer.CloudCart;
 
+import com.liamfer.CloudCart.controller.ProductController;
 import com.liamfer.CloudCart.service.ProductService;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;  // IMPORT CORRETO
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -20,11 +23,8 @@ public class ProductControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
-    private ProductService productService;
-
     @Test
-    public void shouldReturnPagedProducts() throws Exception {
+    void shouldReturnPagedProducts() throws Exception {
         mockMvc.perform(get("/products")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -32,10 +32,11 @@ public class ProductControllerTest {
     }
 
     @Test
-    public void shouldReturnProductById() throws Exception {
+    void shouldReturnProductById() throws Exception {
         mockMvc.perform(get("/products/34232")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());
     }
 }
+
