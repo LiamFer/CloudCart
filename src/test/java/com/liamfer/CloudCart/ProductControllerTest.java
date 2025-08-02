@@ -28,7 +28,8 @@ public class ProductControllerTest {
         mockMvc.perform(get("/products")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.content").isArray());
+                .andExpect(jsonPath("$.content").isArray())
+                .andDo(print());
     }
 
     @Test
@@ -36,6 +37,12 @@ public class ProductControllerTest {
         mockMvc.perform(get("/products/34")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").exists())
+                .andExpect(jsonPath("$.name").exists())
+                .andExpect(jsonPath("$.description").exists())
+                .andExpect(jsonPath("$.price").exists())
+                .andExpect(jsonPath("$.available").exists())
+                .andExpect(jsonPath("$.images").exists())
                 .andDo(print());
     }
 
