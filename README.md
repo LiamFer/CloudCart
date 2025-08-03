@@ -94,13 +94,26 @@ CloudCart/
 
 ---
 
+
 ## 🧪 Testes
 
-Você pode rodar os testes unitários e de integração com:
+Este projeto possui **testes de integração** escritos com `@SpringBootTest`, que validam o comportamento real da aplicação com o contexto Spring totalmente carregado.
+
+Os testes cobrem:
+
+* Criação, listagem, atualização e exclusão de produtos via API
+* Requisições autenticadas com JWT
+* Verificações no corpo da resposta JSON (estrutura, propriedades, conteúdo)
+* Rotas protegidas e de administrador
+
+Para rodar os testes:
 
 ```bash
 ./mvnw test
 ```
+
+> ⚠️ Certifique-se de que o banco de dados de teste esteja corretamente configurado no `application.properties` ou `application-test.properties`.
+
 
 ---
 
