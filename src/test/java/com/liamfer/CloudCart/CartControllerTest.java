@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
 import com.liamfer.CloudCart.dto.cart.AddCartItemDTO;
+import com.liamfer.CloudCart.dto.cart.CartItemAmountDTO;
 import com.liamfer.CloudCart.dto.product.ProductDTO;
 import com.liamfer.CloudCart.dto.user.LoginUserDTO;
 import org.junit.jupiter.api.Test;
@@ -65,5 +66,21 @@ public class CartControllerTest {
                 .andExpect(status().isCreated())
                 .andReturn();
         System.out.println("CREATED: Produto adicionado com Sucesso no Carrinho!");
+    }
+
+    @Test
+    void shouldEditItemInCart() throws Exception {
+        String token = this.generateAuthToken();
+        CartItemAmountDTO dto = new CartItemAmountDTO(3);
+        String json = new ObjectMapper().writeValueAsString(dto);
+        mockMvc.perform(patch("/cart/item/23") // Endpoint -> /cart/item/:id
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + token)
+                        .content(json))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").exists())
+                .andExpect(jsonPath("$.product").exists())
+                .andReturn();
+        System.out.println("PATCHED: Quantidade do Produto Editada com Sucesso no Carrinho!");
     }
 }
