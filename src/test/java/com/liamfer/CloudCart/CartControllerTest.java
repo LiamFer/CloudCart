@@ -57,7 +57,7 @@ public class CartControllerTest {
     @Test
     void shouldAddItemInCart() throws Exception {
         String token = this.generateAuthToken();
-        AddCartItemDTO dto = new AddCartItemDTO(30L,1);
+        AddCartItemDTO dto = new AddCartItemDTO(25L,1);
         String json = new ObjectMapper().writeValueAsString(dto);
         mockMvc.perform(post("/cart")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -73,7 +73,7 @@ public class CartControllerTest {
         String token = this.generateAuthToken();
         CartItemAmountDTO dto = new CartItemAmountDTO(3);
         String json = new ObjectMapper().writeValueAsString(dto);
-        mockMvc.perform(patch("/cart/item/23") // Endpoint -> /cart/item/:id
+        mockMvc.perform(patch("/cart/item/25") // Endpoint -> /cart/item/:id
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + token)
                         .content(json))
@@ -82,5 +82,32 @@ public class CartControllerTest {
                 .andExpect(jsonPath("$.product").exists())
                 .andReturn();
         System.out.println("PATCHED: Quantidade do Produto Editada com Sucesso no Carrinho!");
+    }
+
+    @Test
+    void shouldDeleteItemFromCart() throws Exception {
+        String token = this.generateAuthToken();
+
+        AddCartItemDTO dto = new AddCartItemDTO(30L,1);
+        String json = new ObjectMapper().writeValueAsString(dto);
+        MvcResult postResult = mockMvc.perform(post("/cart")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + token)
+                        .content(json))
+                .andExpect(status().isCreated())
+                .andReturn();
+        String responseJson = postResult.getResponse().getContentAsString();
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode jsonNode = objectMapper.readTree(responseJson);
+        Long productId = jsonNode.get("id").asLong();
+        System.out.printf("CREATED: Produto ID %d adicionado com Sucesso no Carrinho!\n",productId);
+
+
+        mockMvc.perform(delete("/cart/item/"+productId) // Endpoint -> /cart/item/:id
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + token))
+                .andExpect(status().isNoContent())
+                .andReturn();
+        System.out.printf("DELETED: Produto ID %d Deletado com Sucesso do Carrinho!\n",productId);
     }
 }
