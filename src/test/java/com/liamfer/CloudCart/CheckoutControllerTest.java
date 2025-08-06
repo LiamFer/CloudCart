@@ -2,6 +2,7 @@ package com.liamfer.CloudCart;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
+import com.liamfer.CloudCart.dto.cart.AddCartItemDTO;
 import com.liamfer.CloudCart.dto.user.LoginUserDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,4 +49,18 @@ public class CheckoutControllerTest {
                 .andReturn();
         System.out.println("OK: Ordens de Checkout Retornadas com Sucesso!");
     }
+
+    @Test
+    void shouldCreateCheckoutOrder() throws Exception {
+        String token = this.generateAuthToken();
+        mockMvc.perform(post("/checkout")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + token))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.sessionId").exists())
+                .andExpect(jsonPath("$.sessionUrl").exists())
+                .andReturn();
+        System.out.println("CREATED: Ordem de Checkout Gerada com Sucesso!");
+    }
+
 }
