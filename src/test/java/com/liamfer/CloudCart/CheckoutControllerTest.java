@@ -3,6 +3,7 @@ package com.liamfer.CloudCart;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
 import com.liamfer.CloudCart.dto.cart.AddCartItemDTO;
+import com.liamfer.CloudCart.dto.cart.CartItemAmountDTO;
 import com.liamfer.CloudCart.dto.user.LoginUserDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -61,6 +61,17 @@ public class CheckoutControllerTest {
                 .andExpect(jsonPath("$.sessionUrl").exists())
                 .andReturn();
         System.out.println("CREATED: Ordem de Checkout Gerada com Sucesso!");
+    }
+
+    @Test
+    void shouldCancelCheckoutOrder() throws Exception {
+        String token = this.generateAuthToken();
+        mockMvc.perform(post("/checkout/cancel/11") // Endpoint ->/checkout/cancel/:id
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + token))
+                .andExpect(status().isOk())
+                .andReturn();
+        System.out.println("CANCELED: Ordem de Checkout Cancelada!");
     }
 
 }
