@@ -93,7 +93,7 @@ O banco foi modelado para suportar usuários, produtos, pedidos, pagamentos e ca
 
 ```bash
 # Clone o repositório
-git clone https://github.com/seu-usuario/cloudcart.git
+git clone https://github.com/LiamFer/CloudCart.git
 
 # Acesse o diretório
 cd cloudcart
